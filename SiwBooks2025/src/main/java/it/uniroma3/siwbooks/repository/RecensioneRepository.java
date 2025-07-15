@@ -1,5 +1,9 @@
 package it.uniroma3.siwbooks.repository;
 
-public interface RecensioneRepository {
+import org.springframework.data.repository.CrudRepository;
+
+import it.uniroma3.siwbooks.model.Recensione;
+
+public interface RecensioneRepository extends CrudRepository<Recensione, Long>{
 
 }

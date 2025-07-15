@@ -1,5 +1,9 @@
 package it.uniroma3.siwbooks.repository;
 
-public interface LibroRepository {
+import org.springframework.data.repository.CrudRepository;
+
+import it.uniroma3.siwbooks.model.Libro;
+
+public interface LibroRepository extends CrudRepository<Libro, Long>{
 
 }
