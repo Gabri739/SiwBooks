@@ -1,6 +1,7 @@
 package it.uniroma3.siwbooks.authentication;
 
-
+import static it.uniroma3.siwbooks.model.Credenziali.ADMIN_ROLE;
+import static it.uniroma3.siwbooks.model.Credenziali.DEFAULT_ROLE;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
