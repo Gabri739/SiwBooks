@@ -1,0 +1,24 @@
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdf6ee; margin: 0; }
+header {
+    background: url('/images/libri.jpeg') center/cover no-repeat;
+    color: #fff;
+    padding: 2rem 0;
+    text-align: center;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 2px 8px #dfe6e9;
+}
+nav { margin: 1rem 0; text-align: center; }
+nav a { color: #2d3436; text-decoration: none; margin: 0 1.5rem; font-weight: bold; }
+nav a:hover { color: #0984e3; }
+.container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #dfe6e9; padding: 2rem; }
+h1 { margin-top: 0; }
+.cta { margin: 2rem 0; text-align: center; }
+.cta a { background: #0984e3; color: #fff; padding: 0.8rem 2rem; border-radius: 5px; text-decoration: none; font-size: 1.1rem; }
+.cta a:hover { background: #74b9ff; }
+.features { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem; }
+.feature { flex: 1 1 250px; background: #f1f2f6; border-radius: 8px; padding: 1.5rem; text-align: center; }
+.feature h3 { margin-top: 0; color: #0984e3; }
+footer { text-align: center; color: #636e72; margin: 2rem 0 1rem 0; font-size: 0.95rem; }

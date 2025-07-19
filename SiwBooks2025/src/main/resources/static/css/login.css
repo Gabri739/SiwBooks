@@ -1,0 +1,46 @@
+.login-container {
+    max-width: 400px;
+    margin: 4rem auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #dfe6e9;
+    padding: 2rem;
+}
+.login-container h2 { text-align: center; color: #2d3436; }
+.login-container form { display: flex; flex-direction: column; gap: 1.2rem; }
+.login-container label { font-weight: bold; color: #2d3436; }
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    padding: 0.7rem;
+    border: 1px solid #b2bec3;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+.login-container button {
+    background: #0984e3;
+    color: #fff;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+.login-container button:hover { background: #74b9ff; }
+.error-message { color: #d63031; text-align: center; margin-bottom: 1rem; }
+.top-right-home {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+}
+.top-right-home a {
+    background: none;
+    color: #0984e3;
+    padding: 0;
+    border-radius: 0;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: none;
+    display: inline-block;
+}
+.top-right-home a:hover { background: none; }

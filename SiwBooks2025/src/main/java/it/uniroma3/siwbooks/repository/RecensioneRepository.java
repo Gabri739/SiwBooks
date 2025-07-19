@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface RecensioneRepository extends CrudRepository<Recensione, Long>{
 
-    public Optional<Recensione> findByUtenteIdAndLibro(Object utenteId, Libro libro);
+    public Optional<Recensione> findByUtenteIdAndLibro(Long utenteId, Libro libro);
 }

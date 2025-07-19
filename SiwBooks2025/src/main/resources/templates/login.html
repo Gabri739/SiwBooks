@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SiwBooks</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="top-right-home">
+        <a href="/" title="Torna alla Home">
+            <img src="/images/backhome.png" alt="Home" style="height:32px;width:32px;vertical-align:middle;">
+        </a>
+    </div>
+    <div class="login-container">
+        <h2>Accedi a SiwBooks</h2>
+        <form method="post" action="/login">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="pwd">Password</label>
+            <input type="password" id="pwd" name="pwd" required>
+
+            <button type="submit">Login</button>
+
+            <div style="text-align:center; margin-top: 1rem; font-size: 0.98rem;">
+                Ancora non hai un profilo? <a href="/register" style="color:#0984e3; font-weight:bold; text-decoration:underline;">Registrati!</a>
+            </div>
+        </form>
+        <div class="error-message">
+            <!-- Mostra errore se login fallito -->
+            <span th:if="${param.error}" th:text="'Credenziali non valide'">Credenziali non valide</span>
+            <script>
+                if(window.location.search.includes('error')){
+                    document.write('<span style="color:#d63031">Credenziali non valide</span>');
+                }
+            </script>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione - SiwBooks</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="top-right-home">
+        <a href="/" title="Torna alla Home">
+            <img src="/images/backhome.png" alt="Home" style="height:32px;width:32px;vertical-align:middle;">
+        </a>
+    </div>
+    <div class="login-container">
+        <h2>Registrati a SiwBooks</h2>
+        <form method="post" action="/register">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="pwd">Password</label>
+            <input type="password" id="pwd" name="pwd" required>
+
+            <label for="confirmPwd">Conferma Password</label>
+            <input type="password" id="confirmPwd" name="confirmPwd" required>
+
+            <button type="submit">Registrati</button>
+        </form>
+        <div class="error-message">
+            <!-- Mostra errore se username già esistente o password non coincidono -->
+            <span th:if="${param.error}" th:text="${param.error}">Errore nella registrazione</span>
+        </div>
+    </div>
+</body>
+</html>

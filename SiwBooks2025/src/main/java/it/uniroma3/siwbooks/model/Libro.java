@@ -31,7 +31,7 @@ public class Libro {
 	private Set<Immagine> immagini;
 	
 	
-	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "libro", cascade = CascadeType.ALL)
 	private List<Recensione> recensioni;
 	
 	public List<Recensione> getRecensioni() {
