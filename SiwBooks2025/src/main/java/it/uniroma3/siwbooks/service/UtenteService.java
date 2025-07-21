@@ -6,27 +6,27 @@ import org.springframework.stereotype.Service;
 import it.uniroma3.siwbooks.model.Utente;
 import it.uniroma3.siwbooks.repository.UtenteRepository;
 
+import jakarta.validation.Valid;
+
 @Service
 public class UtenteService {
+
+	@Autowired
+	private UtenteRepository utenteRepository;
 	
 	@Autowired
-	private UtenteRepository utenterepository;
-	
-	@Autowired
-	private CredenzialiService credenzialiservice;
-	
-	private Utente UtenteById(Long Id) {
-		// Implementazione per ottenere un utente per ID
-		return utenterepository.findById(Id).orElse(null);
+	private CredenzialiService credenzialiService;
+
+	public Utente getUtenteCorrente() {
+		return credenzialiService.getUtenteCorrente();
 	}
-	
-	private void saveUtente(Utente utente) {
-		// Implementazione per salvare un utente
-		utenterepository.save(utente);
+
+	public Utente findById(Long id) {
+		return utenteRepository.findById(id).orElse(null);
 	}
-	
-	private Utente getUtenteCorrente() {
-		// Implementazione per ottenere l'utente corrente
-		return credenzialiservice.getUtenteCorrente();
+
+	public void saveUtente(@Valid Utente utente) {
+		this.utenteRepository.save(utente);
+		
 	}
 }

@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.FetchType;
 
 import java.util.*;
 
@@ -20,18 +22,20 @@ public class Libro {
 	
 	private String titolo;
 	
+	@OneToOne
+	private Immagine copertina;
 	
 	private int annodiPubblicazione;
-	
-	@ManyToMany
+
 	//molti autori hanno scritto molti libri
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Autore> autori;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER)
 	private Set<Immagine> immagini;
 	
 	
-	@OneToMany(mappedBy = "libro", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Recensione> recensioni;
 	
 	public List<Recensione> getRecensioni() {
@@ -56,6 +60,14 @@ public class Libro {
 
 	public void setTitolo(String titolo) {
 		this.titolo = titolo;
+	}
+
+	public Immagine getCopertina() {
+		return copertina;
+	}
+
+	public void setCopertina(Immagine copertina) {
+		this.copertina = copertina;
 	}
 
 	public int getAnnodiPubblicazione() {

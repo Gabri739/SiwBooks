@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 @Entity
 public class Immagine {
 
+	public final static String PATH = "/images/";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

@@ -12,6 +12,11 @@ public class AutoreService {
     @Autowired
     private AutoreRepository autoreRepository; 
 
+    public Iterable<Autore> getAutori() {
+        // Implementazione per ottenere tutti gli autori
+        return autoreRepository.findAll();
+    }
+
     public Autore getAutore(Long id) {
         // Implementazione per ottenere un autore per ID
         return autoreRepository.findById(id).orElse(null);

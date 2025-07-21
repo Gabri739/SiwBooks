@@ -17,7 +17,7 @@ public class Recensione {
 	
 	private String titolo;
 	
-	private int voto;
+	private Integer voto;
 	
 	private String testoRecensione;
 	
@@ -26,6 +26,15 @@ public class Recensione {
 	
 	@ManyToOne
 	private Libro libro;
+
+	// Default constructor	
+	public Recensione(String titolo, Integer voto, String testoRecensione, Utente utente, Libro libro) {
+		this.titolo = titolo;
+		this.voto = voto;
+		this.testoRecensione = testoRecensione;
+		this.utente = utente;
+		this.libro = libro;
+	}
 	
 	public Long getId() {
 		return id;

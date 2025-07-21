@@ -7,72 +7,52 @@ import static it.uniroma3.siwbooks.model.Credenziali.DEFAULT_ROLE;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import it.uniroma3.siwbooks.model.Utente;
 import it.uniroma3.siwbooks.model.Credenziali;
 import it.uniroma3.siwbooks.repository.CredenzialiRepository;
+import jakarta.validation.Valid;
 
 @Service
 public class CredenzialiService {
 
-	   @Autowired
-	   private CredenzialiRepository credenzialiRepository;
+	@Autowired
+	private CredenzialiRepository credenzialiRepository;
 
-	   @Autowired
-	   private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-	   public Utente getUtenteCorrente() {
-			   Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			   if (authentication == null || !authentication.isAuthenticated()) {
-					   return null;
-			   }
-			   Object principal = authentication.getPrincipal();
-			   String username = null;
-			   if (principal instanceof UserDetails) {
-					   username = ((UserDetails) principal).getUsername();
-			   } else if (principal instanceof String) {
-					   username = (String) principal;
-			   }
-			   if (username == null) {
-					   return null;
-			   }
-			   Credenziali credenziali = credenzialiRepository.findByUsername(username);
-			   if (credenziali != null) {
-					   return credenziali.getUtente();
-			   }
-			   return null;
-	   }
-
-	   public Credenziali getCredenzialiByUsername(String username) {
-			   return credenzialiRepository.findByUsername(username);
+	public Credenziali getCredenzialiByUsername(String username) {
+		return this.credenzialiRepository.findByUsername(username);// .orElse(null);
 	}
 
-	   	public Credenziali getCredenzialiByUtente(Utente utente) {
-			return credenzialiRepository.findByUtente(utente);
-		}
+	public boolean existsByUsername(String username) {
+		return this.credenzialiRepository.existsByUsername(username);
+	}
 
-	   public boolean isAdminCorrente(String username) {
-			Credenziali credenziali = credenzialiRepository.findByUsername(username);
-			if (credenziali != null && credenziali.getRuolo() != null) {
-					return credenziali.getRuolo().equals(ADMIN_ROLE);
-			}
+	public void saveCredenziali(@Valid Credenziali credenziali) {
+		credenziali.setRuolo(DEFAULT_ROLE);
+		credenziali.setPassword(this.passwordEncoder.encode(credenziali.getPassword()));
+		this.credenzialiRepository.save(credenziali);
+
+	}
+
+	public Credenziali getCredenzialiByUtente(Utente utente) {
+		return this.credenzialiRepository.findByUtente(utente); // .orElse(null);
+	}
+
+	public boolean isAdminCorrente(Utente admin) {
+		try {
+			return this.getCredenzialiByUtente(admin).getRuolo().equals(ADMIN_ROLE);
+		} catch (Exception e) {
 			return false;
-	   }
+		}
+	}
 
-	   public boolean existsByUsername(String username) {
-			return credenzialiRepository.existsByUsername(username);
-	   }
-
-	   public void saveCredenziali(Credenziali credenziali) {
-			credenziali.setRuolo(DEFAULT_ROLE); // Imposta il ruolo come DEFAULT_ROLE di base
-			credenziali.setPassword(this.passwordEncoder.encode(credenziali.getPassword())); // Codifica la passord e la cripta
-			credenzialiRepository.save(credenziali);
-	   }
-
-
-
-
+	public Utente getUtenteCorrente() {
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return this.getCredenzialiByUsername(userDetails.getUsername()).getUtente();
+	}
 }
