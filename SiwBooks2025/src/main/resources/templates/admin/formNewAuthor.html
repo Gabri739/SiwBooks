@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nuovo Autore</title>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,600" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <style>
+        body { background: #f5ecd7; font-family: 'Merriweather', serif; }
+        .form-author-container { max-width: 480px; margin: 48px auto; background: #fff8e1; border-radius: 32px; box-shadow: 0 4px 18px rgba(124,92,43,0.12); padding: 48px 38px 38px 38px; }
+        .form-title { font-size: 2rem; font-weight: 700; margin-bottom: 24px; text-align: center; color: #7c5c2b; font-family: 'Merriweather', serif; }
+        .author-form .form-group { margin-bottom: 18px; }
+        .author-form label { font-weight: 600; color: #7c5c2b; margin-bottom: 6px; display: block; }
+        .author-form input, .author-form select { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid #e7d7b8; font-size: 1rem; background: #f5ecd7; color: #7c5c2b; }
+        .author-form input[type="file"] { background: none; border: none; }
+        .btn-submit-author { width: 100%; background: #7c5c2b;; color: #fff8e1; font-weight: 600; border: none; border-radius: 20px; padding: 10px 0; font-size: 1.1rem; cursor: pointer; margin-top: 12px; box-shadow: 0 2px 8px rgba(124,92,43,0.10); transition: background 0.2s, color 0.2s; }
+        .btn-submit-author:hover {
+            background: #5a3c13;
+            color: #fff8e1;
+        }
+        .form-error, .survey-error-message { color: #c0392b; background: #fff0e1; border-radius: 12px; padding: 10px 16px; margin-bottom: 12px; font-size: 1rem; text-align: center; }
+        .back-link { display: block; margin: 22px auto 0 auto; text-align: center; color: #7c5c2b; text-decoration: underline; font-size: 1.05rem; }
+        .navbar { background: url('/images/libri.jpeg') center/cover no-repeat; height: 220px; padding: 0 0; margin-bottom: 0; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; align-items: center; }
+        .navbar-content {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            max-width: 1100px;
+            margin: 0 0 0 32px;
+            gap: 32rem;
+        }
+        .navbar-links-group[style*="flex-direction: column"] {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+        .navbar-Title {
+            color: #fff;
+            font-family: 'Merriweather', serif;
+            font-size: 2.8rem;
+            margin: 0 auto;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+            text-align: center;
+        }
+        .navbar-Subtitle {
+            font-size: 1.05rem;
+            color: #fff;
+            font-family: 'Open Sans', sans-serif;
+            margin-top: 2px;
+            margin-left: 0;
+            letter-spacing: 0.5px;
+            font-weight: 400;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.10);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            align-self: center;
+            text-align: center;
+        }
+        .navbar-links-group:last-child { flex: 0 0 auto; }
+        .navbar-links-group {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            margin-top: 56px;
+        }
+        .navbar-link {
+            color: #7c5c2b;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.35rem 0.8rem;
+            border-radius: 20px;
+            background: #fff8e1;
+            transition: background 0.2s, color 0.2s;
+            border: none;
+            box-shadow: 0 2px 8px rgba(124,92,43,0.10);
+        }
+        .navbar-link.active, .navbar-link:hover {
+            background: #e7d7b8;
+            color: #7c5c2b;
+        }
+        .navbar-link.no-bg { background: none !important; box-shadow: none !important; }
+        .footer { background: none; color: #7c5c2b; font-size: 1.05rem; text-align: center; padding: 24px 0 12px 0; margin-top: auto; }
+        @media (max-width: 600px) {
+            .form-author-container { padding: 18px 8px; }
+            .navbar-content { flex-direction: column; gap: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-content">
+        <!-- Home icon button on the left -->
+        <div class="navbar-links-group" style="margin-right: 4rem;">
+            <a th:href="@{/}" class="navbar-link no-bg" style="padding: 0.35rem 0.8rem; display: flex; align-items: center; background: none; box-shadow: none;">
+                <img src="/images/backhome.png" alt="Home" style="height: 40px; width: 40px; object-fit: contain; margin-right: 0;" />
+            </a>
+        </div>
+        <!-- Title and subtitle -->
+        <div class="navbar-links-group" style="flex-direction: column; align-items: flex-start; display: flex;">
+            <h1 class="navbar-Title">SiwBooks</h1>
+            <span class="navbar-Subtitle">Aggiungi un Autore</span>
+        </div>
+        <!-- Profile button -->
+        <div class="navbar-links-group">
+            <a th:href="@{'/admin/' + ${user.id}}" class="navbar-link">Profilo</a>
+        </div>
+    </div>
+</nav>
+<div class="form-author-container">
+    <div th:if="${errorMessage != null}" class="survey-error-message" th:text="${errorMessage}"></div>
+    <div class="form-title">Nuovo Autore</div>
+    <form th:action="@{/admin/authors/save}" method="post" enctype="multipart/form-data" class="author-form" th:object="${author}">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" th:field="*{name}" id="name" maxlength="100" required placeholder="Inserisci il nome" autocomplete="off"/>
+            <div class="form-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <div class="form-group">
+            <label for="surname">Cognome</label>
+            <input type="text" th:field="*{surname}" id="surname" maxlength="100" required placeholder="Inserisci il cognome" autocomplete="off"/>
+            <div class="form-error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
+        </div>
+        <div class="form-group">
+            <label for="dateBirth">Data di nascita</label>
+            <input type="date" th:field="*{dateBirth}" id="dateBirth" pattern="\d{4}-\d{2}-\d{2}" required placeholder="gg-mm-aaaa" max="${T(java.time.LocalDate).now()}" />
+            <div class="form-error" th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}"></div>
+        </div>
+        <div class="form-group">
+            <label for="dateDeath">Data di morte</label>
+            <input type="date" th:field="*{dateDeath}" id="dateDeath" pattern="\d{4}-\d{2}-\d{2}" placeholder="gg-mm-aaaa" max="${T(java.time.LocalDate).now()}" />
+            <div class="form-error" th:if="${#fields.hasErrors('dateDeath')}" th:errors="*{dateDeath}"></div>
+        </div>
+        <div class="form-group">
+            <label for="nationality">Nazionalità</label>
+            <select th:field="*{nationality}" id="nationality" required>
+                <option value="" disabled th:if="*{nationality} == null" selected>-- seleziona nazionalità --</option>
+                <option value="Italiana">Italiana</option>
+                <option value="Francese">Francese</option>
+                <option value="Tedesca">Tedesca</option>
+                <option value="Spagnola">Spagnola</option>
+                <option value="Inglese">Inglese</option>
+                <option value="Americana">Americana</option>
+                <option value="Cinese">Cinese</option>
+                <option value="Giapponese">Giapponese</option>
+                <option value="Altra">Altra</option>
+            </select>
+            <div class="form-error" th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}"></div>
+        </div>
+        <div class="form-group">
+            <label for="photo">Foto autore</label>
+            <input type="file" id="photo" name="photoFile" accept="image/*"/>
+            <div class="form-error" th:if="${photoError != null}" th:text="${photoError}"></div>
+        </div>
+        <button type="submit" class="btn-submit-author">Salva Autore</button>
+        <div class="form-error" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}"></div>
+    </form>
+    <a th:href="@{/admin/authors}" class="back-link">Torna all'elenco autori</a>
+</div>
+<footer class="footer">
+    <div class="footer-content">
+        <p>Siwbooks - La tua libreria digitale</p>
+    </div>
+</footer>
+</body>
+</html>

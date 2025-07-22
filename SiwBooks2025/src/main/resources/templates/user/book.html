@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+/* Nascondi TUTTI i radio del carosello, anche in Firefox/Edge/Chrome */
+input[type="radio"].carousel-input,
+input.carousel-input[type="radio"],
+.carousel-input {
+  display: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+}
+</style>
+<style>
+/* Forza layout verticale delle card recensione e separa il pulsante elimina */
+.survey-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.survey-rating {
+  margin-bottom: 0.5em;
+}
+.survey-delete-btn {
+  margin-top: 0.2em;
+}
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dettagli Libro</title>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,600" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/book.css}">  
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="navbar-content">
+                <div class="navbar-links-group">
+                    <h1 class="navbar-Title">SiwBooks</h1>
+                </div>
+                <div class="navbar-links-group" style="flex:1; justify-content: flex-end; align-items: center; gap: 1em;">
+                    
+                    <a th:href="@{/}" class="navbar-link" style="padding:0 8px 0 0; background:none; border:none;">
+                        <img th:src="@{/images/backhome.png}" alt="Home" style="height:28px;vertical-align:middle;" />
+                    </a>
+                    <a th:href="@{/user/authors}" class="navbar-link">Autori</a>
+
+                    <th:block th:if="${user != null and surveyUser == null}">
+                        <button id="openReviewModalBtn" class="navbar-link" type="button">Lascia una recensione</button>
+                    </th:block>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="details-container">
+        <div class="book-details">
+            <div class="book-info">
+                <!-- Carousel Section dentro la card -->
+                <div class="carousel-container" role="region" aria-label="Galleria immagini libro">
+                    <!-- Radio Inputs -->
+                    <th:block th:if="${not #lists.isEmpty(book.images)}">
+                        <th:block th:each="img, stat : ${book.images}">
+                            <input type="radio" 
+                                   name="carousel" 
+                                   th:id="'slide' + ${stat.index}"
+                                   class="carousel-input"
+                                   th:checked="${stat.index == 0}"
+                                   th:aria-label="'Slide ' + ${stat.index + 1}">
+                        </th:block>
+                    </th:block>
+                    <div class="carousel">
+                        <div class="carousel-slides">
+                            <!-- Image Slides -->
+                            <th:block th:if="${not #lists.isEmpty(book.images)}">
+                                <div th:each="img, stat : ${book.images}" 
+                                     class="carousel-slide"
+                                     th:aria-hidden="${stat.index != 0}">
+                                    <img th:src="@{${img.name}}"
+                                         th:alt="'Immagine ' + ${stat.index + 1} + ' di ' + ${book.title}"
+                                         class="carousel-img"
+                                         loading="lazy">
+                                </div>
+                            </th:block>
+                            <!-- Placeholder for no images -->
+                            <div th:if="${#lists.isEmpty(book.images)}" 
+                                 class="carousel-slide placeholder-img">
+                                Nessuna immagine disponibile
+                            </div>
+                        </div>
+                        <!-- Navigation Dots -->
+                        <div class="carousel-nav" 
+                             th:if="${not #lists.isEmpty(book.images) and #lists.size(book.images) > 1}">
+                            <label th:each="img, stat : ${book.images}"
+                                   th:for="'slide' + ${stat.index}"
+                                   class="carousel-dot"
+                                   th:aria-label="'Vai alla immagine ' + ${stat.index + 1}">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="book-title" th:text="${book.title}">Titolo del Libro</h1>
+
+                <div class="info-section">
+                    <h2>Autori</h2>
+                    <div class="authors-list">
+                        <a th:each="author : ${book.authors}"
+                           th:href="@{'/user/authors/' + ${author.id}}"
+                           class="author-link"
+                           th:text="${author.name + ' ' + author.surname}">
+                            Nome Autore
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h2>Anno di Pubblicazione</h2>
+                    <p th:text="${book.yearPubblication}">2023</p>
+                </div>
+                <div class="info-section">
+                    <h2>Recensioni</h2>
+                    <div th:if="${errorMessage != null}" class="survey-error-message" th:text="${errorMessage}"></div>
+                    <div class="surveys-list" th:if="${!#lists.isEmpty(book.surveys)}">
+                        <div th:each="survey : ${book.surveys}" th:class="${user != null and surveyUser != null and survey.user.id == user.id} ? 'survey-item user-review' : 'survey-item'">
+                            <h4 class="survey-title" th:text="'Titolo: '+ ${survey.title} + ' [ ' + ${survey.user.name} + ' ' +  ${survey.user.surname}+' ]'">Titolo recensione</h4>
+                            <p class="survey-text">Testo:</p>
+                            <p class="survey-text" th:text="${survey.text}">Testo della recensione</p>
+                            <p class="survey-rating" th:text="${'Valutazione: ' + survey.mark + '/5'}">Valutazione: 5/5</p>
+                            <!-- Pulsante elimina recensione solo se user e surveyUser sono disponibili, subito sotto la valutazione -->
+                            <div th:if="${user != null and surveyUser != null and survey.user.id == user.id}" style="margin-top:0.6em;">
+                                <form th:action="@{'/user/books/' + ${book.id} + '/survey/' + ${surveyUser.id} + '/delete'}"
+                                      method="get" style="display:inline;">
+                                    <button type="submit" class="survey-delete-btn">
+                                        Elimina recensione
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="surveys-list" th:if="${#lists.isEmpty(book.surveys)}">
+                        <h3 class="survey-empty">Nessuna recensione</h3>
+                    </div>
+                </div>
+                <!-- Form recensione visibile solo se user != null e surveyUser == null -->
+                <div class="info-section" th:if="${user != null and surveyUser == null}">
+
+
+                    <script>
+                        // Modal logic
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const openBtn = document.getElementById('openReviewModalBtn');
+                            const modal = document.getElementById('reviewModal');
+                            const closeBtn = document.getElementById('closeReviewModalBtn');
+                            const cancelBtn = document.getElementById('cancelReviewModalBtn');
+                            if(openBtn && modal && closeBtn && cancelBtn) {
+                                openBtn.onclick = () => { modal.style.display = 'block'; };
+                                closeBtn.onclick = () => { modal.style.display = 'none'; };
+                                cancelBtn.onclick = () => { modal.style.display = 'none'; };
+                                window.onclick = function(event) {
+                                    if (event.target === modal) { modal.style.display = 'none'; }
+                                }
+                            }
+                        });
+                    </script>
+<!-- Il modale va fuori da tutti i contenitori principali per evitare influenze di layout -->
+</div>
+<div id="reviewModal" class="modal" style="display:none;">
+  <div class="modal-content">
+        <span class="close" id="closeReviewModalBtn">&times;</span>
+        <h2>Lascia una recensione</h2>
+        <div th:if="${errorMessage != null}" class="survey-error-message" th:text="${errorMessage}"></div>
+        <form th:action="@{'/user/'+${user.id}+'/books/' + ${book.id} + '/survey'}" method="post" class="survey-form" id="reviewForm">
+            <div class="form-group">
+                <label for="reviewTitle">Titolo recensione</label>
+                <input type="text" id="reviewTitle" name="title" required maxlength="100"
+                    placeholder="Scrivi qui il titolo della recensione" class="survey-textarea">
+            </div>
+            <div class="form-group">
+                <label for="reviewText">Descrizione recensione</label>
+                <input type="text" id="reviewText" name="text" minlength="8" maxlength="900" required
+                    placeholder="Scrivi qui la tua esperienza..." class="survey-textarea">
+            </div>
+            <div class="form-group">
+                <label for="reviewMark">Valutazione</label>
+                <select id="reviewMark" name="mark" required class="survey-rating-select">
+                    <option value="">Seleziona</option>
+                    <option value="1">1 - Pessimo</option>
+                    <option value="2">2 - Scarso</option>
+                    <option value="3">3 - Medio</option>
+                    <option value="4">4 - Buono</option>
+                    <option value="5">5 - Eccellente</option>
+                </select>
+            </div>
+            <div class="modal-btn-group">
+                <button type="submit" class="survey-submit-btn">Salva</button>
+                <button type="button" class="survey-cancel-btn" id="cancelReviewModalBtn">Annulla</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const openBtn = document.getElementById('openReviewModalBtn');
+    const modal = document.getElementById('reviewModal');
+    const closeBtn = document.getElementById('closeReviewModalBtn');
+    const cancelBtn = document.getElementById('cancelReviewModalBtn');
+    if (openBtn && modal) {
+        openBtn.onclick = function() {
+            modal.style.display = 'flex';
+        };
+    }
+    if (closeBtn && modal) {
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        };
+    }
+    if (cancelBtn && modal) {
+        cancelBtn.onclick = function() {
+            modal.style.display = 'none';
+        };
+    }
+    // Chiudi il modale cliccando fuori dalla finestra
+    window.addEventListener('click', function(event) {
+        if (modal && event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+</script>
+<style>
+/* Modal stile password-card */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(25, 118, 210, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: #fff8e1;
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgba(124,92,43,0.18);
+  padding: 2.2rem 2.2rem 1.5rem 2.2rem;
+  min-width: 320px;
+  max-width: 370px;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  font-family: 'Merriweather', serif;
+  color: #5a3c13;
+  align-items: center;
+  position: relative;
+}
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close:hover, .close:focus {
+  color: #333;
+  text-decoration: none;
+}
+.modal-btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+  margin-top: 1.5em;
+}
+.survey-submit-btn, .survey-cancel-btn {
+  background: #7c5c2b;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-weight: 600;
+}
+.survey-submit-btn:hover, .survey-cancel-btn:hover {
+  background: #5a3c13;
+  color: #fff0e1;
+}
+.survey-form label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #7c5c2b;
+  margin-bottom: 0.2rem;
+  align-self: flex-start;
+}
+.survey-form input[type="text"],
+.survey-form select {
+  width: 100%;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #e7d7b8;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: 'Open Sans', Arial, sans-serif;
+  margin-bottom: 0.7rem;
+  background: #fff;
+  color: #333;
+  transition: border 0.2s;
+}
+.survey-form input[type="text"]:focus,
+.survey-form select:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+</style>
+</style>
+</style>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

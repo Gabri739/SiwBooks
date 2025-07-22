@@ -1,47 +1,73 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiwBooks - Homepage</title>
-    <link rel="stylesheet" href="/css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SiwBooks</title>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,600" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/index.css}" href="/css/index.css">
 </head>
-<body>
-    <header>
-        <h1>Benvenuto su SiwBooks</h1>
-        <p>Il sistema informativo per la gestione di libri e recensioni</p>
-    </header>
-    <nav>
-        <a href="/libri">Libri</a>
-        <a href="/autori">Autori</a>
-        <a href="/login">Login</a>
-        <a href="/register">Registrati</a>
-    </nav>
-    <div class="container">
-        <div class="cta">
-            <a href="/libri">Sfoglia il catalogo libri</a>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+    <div class="top-bar">
+        <div class="left">
+            <a th:href="@{/}" class="back-btn">
+                <img th:src="@{/images/backhome.png}" src="/images/backhome.png" alt="Home">
+            </a>
         </div>
-        <div class="features">
-            <div class="feature">
-                <h3>Gestione Libri</h3>
-                <p>Aggiungi, modifica e consulta i libri presenti nel sistema.</p>
-            </div>
-            <div class="feature">
-                <h3>Recensioni</h3>
-                <p>Leggi e scrivi recensioni sui libri che hai letto, condividi le tue opinioni con altri utenti.</p>
-            </div>
-            <div class="feature">
-                <h3>Gestione Autori</h3>
-                <p>Scopri gli autori, le loro opere e le biografie.</p>
-            </div>
-            <div class="feature">
-                <h3>Area Personale</h3>
-                <p>Accedi alla tua area personale per gestire le tue recensioni e preferenze.</p>
+        <div class="center">
+            <h1>SiwBooks</h1>
+            <p>Benvenuto nella libreria digitale SiwBooks!<br>Scopri, esplora e condividi la passione per la lettura con una collezione sempre aggiornata di libri e autori.</p>
+        </div>
+        <div class="right">
+            <div class="navbar-links-group">
+                <a th:if="${userId == null}" th:href="@{/login}"><button class="top-btn">Login</button></a>
+                <a th:if="${userId != null} and ${admin}" th:href="@{'/admin/' + ${userId}}"><button class="top-btn">Profilo Admin</button></a>
+                <a th:if="${userId != null} and ${!admin}" th:href="@{'/user/' + ${userId}}"><button class="top-btn">Profilo Utente</button></a>
             </div>
         </div>
     </div>
-    <footer>
-        2025 SiwBooks - Sistema informativo per la gestione di libri e recensioni
+
+    <div class="card-row">
+        <a th:if="${userId != null} and ${admin}" th:href="@{/admin/authors}" class="card-h">
+            <div class="card-h-content">
+                <h2 class="card-h-title">Autori (Admin)</h2>
+                <p class="card-h-body">Gestione autori per amministratori</p>
+            </div>
+        </a>
+        <a th:if="${userId != null} and ${!admin}" th:href="@{/user/authors}" class="card-h">
+            <div class="card-h-content">
+                <h2 class="card-h-title">Autori (Utente)</h2>
+                <p class="card-h-body">Autori disponibili per utenti registrati</p>
+            </div>
+        </a>
+        <a th:if="${userId == null}" th:href="@{/authors}" class="card-h">
+            <div class="card-h-content">
+                <h2 class="card-h-title">Autori (Pubblico)</h2>
+                <p class="card-h-body">Autori visibili a tutti</p>
+            </div>
+        </a>
+
+        <a th:if="${userId != null} and ${admin}" th:href="@{/admin/books}" class="card-h">
+            <div class="card-h-content">
+                <h2 class="card-h-title">Libri (Admin)</h2>
+                <p class="card-h-body">Gestione libri per amministratori</p>
+            </div>
+        </a>
+        <a th:if="${userId != null} and ${!admin}" th:href="@{/user/books}" class="card-h">
+            <div class="card-h-content">
+                <h2 class="card-h-title">Libri (Utente)</h2>
+                <p class="card-h-body">Libri disponibili per utenti registrati</p>
+            </div>
+        </a>
+        <a th:if="${userId == null}" th:href="@{/books}" class="card-h">
+            <div class="card-h-content">
+                <h2 class="card-h-title">Libri (Pubblico)</h2>
+                <p class="card-h-body">Libri visibili a tutti</p>
+            </div>
+        </a>
+    </div>
+    <footer class="main-footer">
+        SiwBooks &ndash; La tua Libreria Digitale
     </footer>
 </body>
 </html>

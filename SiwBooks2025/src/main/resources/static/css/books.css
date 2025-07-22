@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,600');
+
+body {
+    font-family: 'Merriweather', serif;
+    background: #f5ecd7;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.header {
+    width: 100vw;
+    background: url('/images/libri.jpeg') center/cover no-repeat;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    height: 120px;
+    display: flex;
+    align-items: center;
+}
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    padding: 0 32px;
+}
+.navbar-links-group {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.navbar-links-group:last-child {
+    margin-right: 48px;
+}
+.navbar-Title {
+    color: #fff;
+    font-family: 'Merriweather', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    margin-left: 18px;
+}
+.navbar-subtitle {
+    display: block;
+    color: #fff;
+    font-family: 'Merriweather', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin-left: 20px;
+    margin-top: -10px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    letter-spacing: 0.2px;
+}
+.navbar-link {
+    background: #fff8e1;
+    color: #7c5c2b;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: none;
+    transition: background 0.2s, color 0.2s;
+    margin-left: 8px;
+    text-decoration: none;
+}
+.navbar-link.active, .navbar-link:hover {
+    background: #ffe4b5;
+    color: #5a3c13;
+}
+.navbar-link.back-btn {
+    background: none;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    margin-left: 0;
+}
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 140px;
+    padding-bottom: 32px;
+    min-height: 60vh;
+}
+.catalog-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.page-title {
+    font-family: 'Merriweather', serif;
+    font-size: 2.2rem;
+    color: #7c5c2b;
+    margin-bottom: 32px;
+    text-align: left;
+}
+.books-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: flex-start;
+}
+.book-card {
+    background: #fff8e1;
+    border-radius: 24px;
+    box-shadow: 0 4px 18px rgba(124,92,43,0.12);
+    padding: 18px 18px 14px 18px;
+    min-width: 180px;
+    max-width: 220px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+    text-decoration: none;
+}
+.book-card:hover {
+    box-shadow: 0 8px 24px rgba(124,92,43,0.18);
+    transform: translateY(-4px) scale(1.03);
+}
+.book-cover-wrapper {
+    width: 126px;
+    height: 178px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.book-cover-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(124,92,43,0.10);
+}
+.book-title {
+    font-family: 'Merriweather', serif;
+    font-size: 1.15rem;
+    color: #7c5c2b;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-align: center;
+}
+.book-author {
+    font-size: 1rem;
+    color: #5a3c13;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.footer {
+    background: none;
+    color: #7c5c2b;
+    font-size: 1.05rem;
+    text-align: center;
+    padding: 24px 0 12px 0;
+    margin-top: auto;
+}
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+@media (max-width: 900px) {
+    .books-grid {
+        gap: 16px;
+    }
+    .book-card {
+        min-width: 140px;
+        max-width: 180px;
+        padding: 12px 8px 10px 8px;
+    }
+}
+@media (max-width: 700px) {
+    .main-content { padding-top: 130px; }
+    .catalog-container { max-width: 98vw; }
+    .books-grid { gap: 10px; }
+    .book-card { min-width: 110px; max-width: 140px; }
+    .navbar-content { flex-direction: column; padding: 0 8px; }
+    .navbar-links-group { gap: 8px; }
+    .navbar-Title { font-size: 1.2rem; margin-left: 4px; }
+}

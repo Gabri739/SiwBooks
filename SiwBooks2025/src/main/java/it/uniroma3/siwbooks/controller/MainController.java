@@ -1,10 +1,6 @@
 package it.uniroma3.siwbooks.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,9 +9,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import it.uniroma3.siwbooks.model.Credenziali;
-import it.uniroma3.siwbooks.model.Utente;
-import it.uniroma3.siwbooks.service.CredenzialiService;
+import it.uniroma3.siwbooks.model.Credentials;
+import it.uniroma3.siwbooks.model.User;
+import it.uniroma3.siwbooks.service.CredentialsService;
+import it.uniroma3.siwbooks.service.UserService;
 import jakarta.validation.Valid;
 
 
@@ -23,11 +20,24 @@ import jakarta.validation.Valid;
 public class MainController {
 
 	@Autowired
-	private CredenzialiService credenzialiService;
+	private UserService userService;
+	@Autowired
+	private CredentialsService credentialsService;
 	
 	
 	@GetMapping("/")
-	public String homepage() {
+	public String getHome(Model model, java.security.Principal principal) {
+		boolean isAdmin = false;
+		Long userId = null;
+		if (principal != null) {
+			Credentials credentials = credentialsService.getCredentialsByUsername(principal.getName());
+			if (credentials != null && credentials.getUser() != null) {
+				userId = credentials.getUser().getId();
+				isAdmin = credentials.getRole().equals(Credentials.ADMIN_ROLE);
+			}
+		}
+		model.addAttribute("userId", userId);
+		model.addAttribute("admin", isAdmin);
 		return "index.html";
 	}
 	
@@ -38,56 +48,47 @@ public class MainController {
 	
 	@GetMapping("/register")
 	public String showRegister(Model model) {
-		model.addAttribute("utente", new Utente());
-		model.addAttribute("credenziali", new Credenziali());
+		model.addAttribute("user", new User());
+		model.addAttribute("credentials", new Credentials());
 		return "register.html";
 	}
 	
-	@PostMapping("/register")
-	public String registerUtente(@Valid @ModelAttribute("user") Utente user,BindingResult utenteBindingResult,@Valid @ModelAttribute("credenziali") Credenziali credenziali,
-	                             @Valid @RequestParam(name = "confirmPwd") String confermaPwd,
-	                             BindingResult credentialsBindingResult,
-	                             Model model) {
-	        
-	        // Validation check for both objects
-	        if (utenteBindingResult.hasErrors() || credentialsBindingResult.hasErrors()) {
-	            model.addAttribute("msgError", "Errore nella validazione dei dati");
-	            return "register.html";
-	        }
-	        // Check if username already exists
-	        if (credenzialiService.existsByUsername(credenziali.getUsername())) {
-	            model.addAttribute("msgError", "Username già in uso");
-	            return "register.html";
-	        }
-	        if(!credenziali.getPassword().equals(confermaPwd)) {
-	        	model.addAttribute("msgError", "Le 2 password scritte non sono uguali");
-	            return "register.html";
-	        }
-	        try {
-	            
-	            // Link utente to credentials
-	            credenziali.setUtente(user);
-	            
-	            // Save credentials
-	            credenzialiService.saveCredenziali(credenziali);
-	            
-	            model.addAttribute("msgSuccess", "Registrazione completata con successo");
-	            return "redirect:/login";
-	            
-	        } catch (Exception e) {
-	            model.addAttribute("msgError", "Errore durante la registrazione");
-	            return "register.html";
-	        }
-	}
-
-	@ModelAttribute("utenteinfo")
-	public UserDetails getUtente() {
-	    UserDetails utente = null;
-	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if (!(authentication instanceof AnonymousAuthenticationToken)) {
-	      utente = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    }
-	    return utente;
-	  }
+	 @PostMapping("/register")
+		public String registerUser(@Valid @ModelAttribute("user") User user,
+								 BindingResult utenteBindingResult,
+								 @Valid @ModelAttribute("credentials") Credentials credentials,
+								 @Valid @RequestParam(name = "confirmPwd") String confermaPwd,
+								 BindingResult credentialsBindingResult,
+								 Model model) {
+			
+			// Validation check for both objects
+			if (utenteBindingResult.hasErrors() || credentialsBindingResult.hasErrors()) {
+				model.addAttribute("msgError", "Errore nella validazione dei dati");
+				return "register.html";
+			}
+			// Check if username already exists
+			if (credentialsService.existsByUsername(credentials.getUsername())) {
+				model.addAttribute("msgError", "Username già in uso");
+				return "register.html";
+			}
+			if(!credentials.getPassword().equals(confermaPwd)) {
+				model.addAttribute("msgError", "Le 2 password scritte non sono uguali");
+				return "register.html";
+			}
+			try {
+				
+				// Link utente to credentials
+				credentials.setUser(user);
+				// Il ruolo di default viene ora impostato dal costruttore di Credentials
+				credentialsService.saveCredentials(credentials);
+				
+				model.addAttribute("msgSuccess", "Registrazione completata con successo");
+				return "redirect:/login";
+				
+			} catch (Exception e) {
+				model.addAttribute("msgError", "Errore durante la registrazione");
+				return "register.html";
+			}
+		}
 	
 }

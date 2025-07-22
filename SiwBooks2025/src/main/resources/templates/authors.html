@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,600" rel="stylesheet">
+    <title>Catalogo Autori</title>
+    <link rel="stylesheet" th:href="@{/css/authors.css}">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="navbar-content" style="display:flex; justify-content:space-between; align-items:center; width:100vw; padding:0 32px;">
+                <div class="navbar-links-group" style="flex-direction:column;align-items:flex-start;gap:0;">
+                    <h1 class="navbar-Title">SiwBooks</h1>
+                    <span class="navbar-subtitle">Benvenuto nella tua libreria digitale</span>
+                </div>
+                <div class="navbar-links-group" style="display:flex; align-items:center; gap:18px; margin-right:5px;">
+                    <a th:href="@{/}" class="navbar-link back-btn">
+                        <img th:src="@{/images/backhome.png}" src="/images/backhome.png" alt="Home" style="width:32px;height:32px;border-radius:50%;vertical-align:middle;box-shadow:0 2px 8px rgba(0,0,0,0.12);margin-right:8px;" />
+                    </a>
+                    <a th:href="@{/books}" class="navbar-link">Libri</a>
+                    <a th:href="@{/login}" class="navbar-link">Accedi</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="main-content">
+        <div class="catalog-container">
+            <div class="page-title">Catalogo Autori</div>
+            <div th:if="${authors.empty}" class="no-authors">
+                Nessun autore disponibile.
+            </div>
+            <div th:if="${!authors.empty}" class="authors-grid">
+                <a class="author-card" th:each="author : ${authors}" th:href="@{'/authors/' + ${author.id}}">
+                    <div class="author-photo-wrapper">
+                        <img th:if="${author.photo != null}" th:src="@{${author.photo.name}}"
+                            th:alt="'Foto di ' + ${author.name}" />
+                        <img th:if="${author.photo == null}"
+                            src="https://placehold.co/126x178?text=Nessuna+foto" alt="Nessuna foto disponibile" />
+                    </div>
+                    <div class="author-name" th:text="${author.name}">Nome Autore</div>
+                    <!-- <div class="author-bio" th:text="${author.bio}">Biografia breve</div> -->
+                </a>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Siwbooks - La tua libreria digitale</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+body {
+    background: #f5f6fa;
+}
+.libri-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    margin: 3rem auto;
+    max-width: 1200px;
+}
+.card-libro {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #dfe6e9;
+    width: 220px;
+    text-align: center;
+    padding: 1.2rem 1rem 1.5rem 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    border: 2px solid #222;
+    text-decoration: none;
+    color: #222;
+}
+.card-libro:hover {
+    box-shadow: 0 4px 16px #b2bec3;
+}
+.card-libro img {
+    width: 160px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.card-libro .titolo {
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #222;
+}
+.no-libri {
+    text-align: center;
+    font-size: 2.2rem;
+    color: #222;
+    margin-top: 5rem;
+    font-weight: bold;
+}
+header {
+    background: url('/images/libri.jpeg') center/cover no-repeat;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 2px 8px #dfe6e9;
+}
+header h1 {
+    color: #fff;
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 8px #222;
+    margin: 0;
+}
+.top-right-buttons {
+    position: absolute;
+    top: 18px;
+    right: 32px;
+    display: flex;
+    gap: 1rem;
+}
+.top-right-buttons a {
+    background: #f5f6fa;
+    color: #0984e3;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: none;
+    border: 2px solid #0984e3;
+    transition: background 0.2s, color 0.2s;
+    font-family: inherit;
+    display: inline-block;
+}
+.top-right-buttons a:hover {
+    background: #0984e3;
+    color: #fff;
+}
+.top-left-home {
+    position: absolute;
+    top: 18px;
+    left: 32px;
+    z-index: 10;
+}
+.top-left-home a {
+    display: inline-block;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+.top-left-home img {
+    height: 32px;
+    width: 32px;
+    vertical-align: middle;
+    transition: filter 0.2s;
+}
+.top-left-home img:hover {
+    filter: brightness(0.7);
+}

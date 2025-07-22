@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Siwbooks - Dettagli Libro</title>
+	<link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,600" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/book.css}">
+</head>
+
+<body>
+	<header class="header">
+		<nav class="navbar">
+			<div class="navbar-content">
+				<div class="navbar-links-group">
+					<h1 class="navbar-Title">SiwBooks</h1>
+				</div>
+				<div class="navbar-links-group navbar-links-right">
+					<a th:if="${user != null}" th:href="@{'/admin/' + ${user.id}}" class="navbar-link">Profilo</a>
+					<span th:if="${user == null}" class="navbar-link disabled" title="Utente non disponibile">Profilo</span>
+					<a th:href="@{/admin/authors}" class="navbar-link">Autori</a>
+					<a th:href="@{/}" class="navbar-link navbar-home no-bg" title="Torna alla home" style="background:none!important;border:none!important;box-shadow:none!important;">
+						<img th:src="@{/images/backhome.png}" alt="Home" class="navbar-home-icon" style="height:28px;vertical-align:middle;background:none!important;border:none!important;box-shadow:none!important;">
+					</a>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="details-container">
+		<div class="book-details">
+			<div class="book-info">
+				<div class="book-cover-section">
+					<div class="images-grid" th:if="${not #lists.isEmpty(book.images)}">
+						<div th:each="img : ${book.images}" class="image-item">
+							<div class="image-wrapper">
+								<a th:href="@{'/admin/books/' + ${book.id} + '/images/' + ${img.id} + '/delete'}" 
+								   class="delete-image-btn" 
+								   title="Elimina immagine">
+									×
+								</a>
+								<img th:src="@{${img.name}}"
+									 th:alt="'Immagine del libro ' + ${book.title}"
+									 class="book-img"
+									 loading="lazy"
+									 style="max-width:160px;max-height:220px;object-fit:cover;display:inline-block;">
+							</div>
+						</div>
+					</div>
+					<div th:if="${#lists.isEmpty(book.images)}" class="no-images-placeholder">
+						Nessuna immagine disponibile
+					</div>
+					<div class="button-add-image">
+						<a class="show-form-btn" th:href="'/admin/books/'+${book.id}+'?showModalAddPhoto=true'">Aggiungi Nuova Foto</a>
+					</div>
+				</div>
+				<h1 class="book-title" th:text="${book.title}">Titolo del Libro</h1>
+				<div class="details-actions">
+					<a class="show-form-btn" th:href="'/admin/books/'+${book.id}+'?showModalEditBook=true'">Modifica Libro</a>
+					<a class="show-form-btn" th:href="'/admin/books/'+${book.id}+'/authors/add'">Associa Nuovo Autore</a>
+					<a class="show-form-btn" th:href="'/admin/books/'+${book.id}+'/authors/delete'">Rimuovi Autore</a>
+				</div>
+				<div class="info-section">
+					<h2>Autori</h2>
+					<div class="authors-list">
+						<a th:each="author : ${book.authors}"
+						   th:href="@{'/admin/authors/' + ${author.id}}"
+						   class="author-link"
+						   th:text="${author.name + ' ' + author.surname}">
+							Nome Autore
+						</a>
+					</div>
+				</div>
+
+				<div class="info-section">
+					<h2>Anno di Pubblicazione</h2>
+					<p th:text="${book.yearPubblication}">2023</p>
+				</div>
+			   </div>
+		   </div>
+		   <!-- REVIEWS SECTION BELOW BOOK CARD -->
+		   <div class="reviews-section">
+			   <h2 style="margin-bottom:1rem;">Recensioni</h2>
+			   <div class="surveys-list" th:if="${!#lists.isEmpty(book.surveys)}">
+				   <div th:each="survey : ${book.surveys}" class="survey-item">
+					   <h4 class="survey-title" th:text="'Titolo: '+ ${survey.title} + ' [ ' + ${survey.user.name} + ' ' +  ${survey.user.surname}+' ]'">Titolo recensione</h4>
+					   <p class="survey-text">Testo:</p>
+					   <p class="survey-text" th:text="${survey.text}">Testo della recensione</p>
+					   <p class="survey-rating" th:text="${'Valutazione: ' + survey.mark + '/5'}">Valutazione: 5/5</p>
+					   <a th:href="@{'/admin/survey/' + ${survey.id} + '/delete'}"class="survey-delete-btn">
+						   Elimina recensione
+					   </a>
+				   </div>
+			   </div>
+			   <!-- No Reviews Message -->
+			   <div class="surveys-list" th:if="${#lists.isEmpty(book.surveys)}">
+				   <h3 class="survey-empty">Nessuna recensione</h3>
+			   </div>
+		   </div>
+			<div th:if="${showModalAddPhoto == true}">
+				<div th:if="${book != null}" class="modal-overlay">
+					<div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="add-foto-title">
+						<a th:href="@{'/admin/books/' + ${book.id}}" class="close-modal-link" title="Chiudi modale" aria-label="Chiudi">×</a>
+						<p class="modal-title" id="add-foto-title">Aggiungi una nuova foto</p>
+						<form class="add-photo-form"
+							  th:action="@{'/admin/books/' + ${book.id} + '/images/add'}"
+							  method="post"
+							  enctype="multipart/form-data">
+							<label for="imageFile">Seleziona immagine *</label>
+							<input type="file" id="imageFile" name="imageFile"
+								   accept="image/*" required>
+							<div class="form-error" th:if="${msgPhotoError != null}" th:text="${msgPhotoError}"></div>
+							<div class="modal-actions" style="display:flex;justify-content:center;align-items:center;gap:0.7rem;margin-top:1.2rem;">
+								<button type="submit" class="btn-submit-photo">Aggiungi</button>
+								<a th:href="@{'/admin/books/' + ${book.id}}" class="btn-cancel-modal">Annulla</a>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div th:if="${book == null}" class="modal-overlay">
+					<div class="modal-content">
+						<p class="modal-title">Errore: dati libro non disponibili.</p>
+						<a th:href="@{/admin/books}" class="btn-cancel-modal">Chiudi</a>
+					</div>
+				</div>
+			</div>
+			<!-- MODALE MODIFICA TITOLO E ANNO -->
+			<div th:if="${showModalEditBook == true}">
+				<div th:if="${book != null}" class="modal-overlay">
+					<div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="edit-book-title">
+						<a th:href="@{'/admin/books/' + ${book.id}}" class="close-modal-link" title="Chiudi modale" aria-label="Chiudi">×</a>
+						<p class="modal-title" id="edit-book-title">Modifica titolo e anno</p>
+						<form class="edit-book-form"
+							  th:action="@{'/admin/books/' + ${book.id} + '/edit'}"
+							  method="post">
+							<label for="edit-title">Titolo *</label>
+							<input type="text" id="edit-title" name="title" minlength="2" maxlength="120" placeholder="Titolo del libro">
+							<label for="edit-anno">Anno di pubblicazione *</label>
+							<input type="number" id="edit-anno" name="yearPubblication" min="1000" max="2100" placeholder="Anno, es: 2025">
+							<div class="form-error" th:if="${msgEditError != null}" th:text="${msgEditError}"></div>
+							<div class="modal-actions" style="display:flex;justify-content:center;align-items:center;gap:0.7rem;margin-top:1.2rem;">
+								<button type="submit" class="btn-submit-edit">Salva</button>
+								<a th:href="@{'/admin/books/' + ${book.id}}" class="btn-cancel-modal">Annulla</a>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div th:if="${book == null}" class="modal-overlay">
+					<div class="modal-content">
+						<p class="modal-title">Errore: dati libro non disponibili.</p>
+						<a th:href="@{/admin/books}" class="btn-cancel-modal">Chiudi</a>
+					</div>
+				</div>
+			</div>
+	</div>
+</body>
+</html>

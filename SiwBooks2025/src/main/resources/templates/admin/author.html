@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title th:text="'Autore: ' + ${author.name} + ' ' + ${author.surname}">Siwbooks - Dettaglio Autore</title>
+	<link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,600" rel="stylesheet">
+	<!-- Riusa lo stile globale degli autori -->
+	<link rel="stylesheet" th:href="@{/css/author.css}">
+</head>
+<body>
+	
+	<input type="checkbox" class="toggle-modal" id="editToggle"/>
+	<input type="checkbox" class="toggle-modal" id="addBookToggle"/>
+	
+	<nav class="navbar">
+		<div class="navbar-content">
+			<div class="navbar-links-group">
+				<h1 class="navbar-Title">SiwBooks</h1>
+			</div>
+			<div class="navbar-links-group">
+				<a th:href="@{'/admin/' + ${user.id}}" class="navbar-link">Profilo</a>
+				<a th:href="@{/admin/books}" class="navbar-link" style="margin-right: 8px;">Libri</a>
+				<a th:href="@{'/'}" class="navbar-link back-btn" title="Home" style="background: none; box-shadow: none; border: none; padding: 0 8px; vertical-align: middle;">
+					<img src="/images/backhome.png" alt="Home" style="height: 28px; width: 28px; vertical-align: middle; margin-left: 6px;">
+				</a>
+			</div>
+		</div>
+	</nav>
+
+	<div class="catalog-container">
+		<div class="page-title" style="text-align: center;" >Autore:</div>
+		
+		<div class="author-details-card">
+			<div class="author-details-header">
+				<div class="author-photo-wrapper">
+					<img th:if="${author.photo != null}"
+						 th:src="@{${author.photo.name}}"
+						 th:alt="'Foto di ' + ${author.name} + ' ' + ${author.surname}" />
+					<img th:if="${author.photo == null}"
+						 src="https://placehold.co/200x200?text=Nessuna+foto"
+						 alt="Nessuna foto disponibile" />
+				</div>
+				<div class="author-details-info">
+					<h2 th:text="${author.name} + ' ' + ${author.surname}">Nome Cognome</h2>
+					<div class="author-details-bio">
+						<p><strong>Nazionalità:</strong> <span th:text="${author.nationality}">Italiana</span></p>
+						<p>
+							<strong>Nato il:</strong> <span th:text="${#temporals.format(author.dateBirth, 'dd/MM/yyyy')}">01-01-1900</span>
+							<span th:if="${author.dateDeath != null}">
+								<br><strong>Morto il:</strong> <span th:text="${#temporals.format(author.dateDeath, 'dd/MM/yyyy')}">15-05-1983</span>
+							</span>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="details-actions">
+				<label class="show-form-btn" for="editToggle" tabindex="0">Modifica Autore</label>
+				<label class="show-add-book-btn" for="addBookToggle" tabindex="0">Associa Nuovo Libro</label>
+			</div>
+		</div>
+
+		<div class="author-books-section">
+			<h3 style="color: #7c5c2b; font-family: 'Merriweather', serif; font-size: 1.35rem; font-weight: 700;">Libri dell'autore:</h3>
+			<div th:if="${#lists.isEmpty(author.books)}" class="no-books">
+				Nessun libro disponibile per questo autore.
+			</div>
+			<div th:if="${!#lists.isEmpty(author.books)}" class="books-grid">
+				<div class="book-card" th:each="book : ${author.books}">
+					<div class="book-cover-wrapper">
+						<img th:if="${book.images != null and !book.images.empty}"
+							 th:src="@{${book.images[0].name}}"
+							 th:alt="'Copertina di ' + ${book.title}" />
+						<img th:if="${book.images == null or book.images.empty}"
+							 src="https://placehold.co/126x178?text=Nessuna+immagine"
+							 alt="Nessuna immagine disponibile" />
+					</div>
+					<div class="book-title" th:text="${book.title}">Titolo Libro</div>
+					
+					<div class = "view-links">
+					<a class="view-admin-link" th:href="@{'/admin/books/' + ${book.id}}" title="Vai al libro">
+						<span style="white-space: nowrap;">Vai al Libro</span>
+					</a>
+						<a class="view-admin-link" th:href="@{'/admin/authors/' + ${author.id} + '/book/'+ ${book.id} + '/remove'}" title="Dettagli autore">
+							Rimuovi
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- MODALE MODIFICA AUTORE, appare se #editToggle è checked -->
+		<div class="modal-bg" id="editModal">
+			<div class="modal-window">
+				<label for="editToggle" class="modal-close-btn" tabindex="0" title="Chiudi">&times;</label>
+				<div class="modal-title">Modifica Informazioni Autore</div>
+				<form th:action="@{'/admin/authors/' + ${author.id} + '/edit'}" method="post" enctype="multipart/form-data" th:object="${author}">
+					<div th:if="${errorMessage}" class="form-errors" th:text="${errorMessage}"></div>
+					<fieldset>
+						<label class="form-label" for="name">Nome</label>
+						<input class="form-input" type="text" id="name" th:field="*{name}" required maxlength="64" />
+
+						<label class="form-label" for="surname">Cognome</label>
+						<input class="form-input" type="text" id="surname" th:field="*{surname}" required maxlength="64" />
+
+						<label class="form-label" for="nationality">Nazionalità</label>
+						<input class="form-input" type="text" id="nationality" th:field="*{nationality}" maxlength="64" />
+
+						<label class="form-label" for="dateBirth">Data di nascita</label>
+						<input class="form-input" type="date" id="dateBirth" th:field="*{dateBirth}" required />
+
+						<label class="form-label" for="dateDeath">Data di morte</label>
+						<input class="form-input" type="date" id="dateDeath" th:field="*{dateDeath}" />
+
+						<label class="form-label" for="photoFile">Foto (carica una nuova per sostituire)</label>
+						<input class="form-file" type="file" id="photoFile" name="photoFile" accept="image/*" />
+					</fieldset>
+					<div class="modal-actions">
+						<button class="form-btn" type="submit">Salva Modifiche</button>
+						<label class="form-btn" for="editToggle" tabindex="0">Annulla</label>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- MODALE AGGIUNGI LIBRO -->
+		<div class="modal-bg" id="addBookModal">
+			<div class="modal-window">
+				<label for="addBookToggle" class="modal-close-btn" tabindex="0" title="Chiudi">&times;</label>
+				<div class="modal-title">Nuovo Libro per l'Autore</div>
+				<form th:action="@{'/admin/authors/' + ${author.id} + '/book/add'}" method="post">
+					<fieldset>
+						<label class="form-label" for="bookId">Libro</label>
+						<select class="form-select" id="bookId" name="bookId" required>
+							<option value="" disabled selected>Scegli un libro...</option>
+							<option th:each="book : ${availableBooks}" th:value="${book.id}" th:text="${book.title}"></option>
+						</select>
+					</fieldset>
+					<div class="modal-actions">
+						<button class="form-btn" type="submit">Associa</button>
+						<label class="form-btn" for="addBookToggle" tabindex="0">Annulla</label>
+					</div>
+				</form>
+			</div>
+		</div>
+	<footer class="footer">
+		<div class="footer-content">
+			<p>Siwbooks - La tua libreria digitale</p>
+		</div>
+	</footer>
+</body>
+</html>

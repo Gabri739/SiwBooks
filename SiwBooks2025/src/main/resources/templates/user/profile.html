@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" th:href="@{images/logo.png}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,600" rel="stylesheet">
+    <title>Siwbooks - Profilo Utente</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+    <div class="top-bar">
+        <div class="left">
+            <a th:href="@{/}" class="back-btn">
+                <img th:src="@{/images/backhome.png}" src="/images/backhome.png" alt="Home">
+            </a>
+        </div>
+        <div class="center">
+            <h1>SiwBooks</h1>
+            <p>Benvenuto nella libreria digitale SiwBooks!<br>Scopri, esplora e condividi la passione per la lettura con una collezione sempre aggiornata di libri e autori.</p>
+        </div>
+        <div class="right">
+            <div class="navbar-links-group">
+                <a th:href="@{'/user/books'}"><button class="top-btn">Libri</button></a>
+                <a th:href="@{'/user/authors'}"><button class="top-btn">Autori</button></a>
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit" class="top-btn">Esci</button>
+                </form>
+            </div>
+        </div>
+    </div> <!-- chiusura top-bar -->
+
+    <main class="main-content profile-main">
+        <div class="profile-card">
+            <div class="profile-header">
+                <h1 th:text="'Benvenuto, ' + ${user.name}">Benvenuto</h1>
+            </div>
+
+            <div class="profile-info">
+                <div class="info-card">
+                    <h3>Informazioni Utente</h3>
+                    <p><strong>Nome:</strong> <span th:text="${user.name}">Mario</span></p>
+                    <p><strong>Cognome:</strong> <span th:text="${user.surname}">Rossi</span></p>
+                    <p><strong>Email:</strong> <span th:text="${user.email}">mario.rossi@example.com</span></p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Azioni</h3>
+                    <a th:href="@{'/user/' + ${user.id} + '/modifyUser'}" class="cta-button edit-profile-button">Modifica Profilo</a>
+                    <!-- Bottone/modal per password -->
+                    <a th:href="@{'/user/' + ${user.id} + '?showPasswordModal=true'}" class="cta-button change-password-button">Cambia Password</a>
+                </div>
+            </div>
+        </div>
+        <div th:if="${showPasswordModal == true}"
+           th:classappend="${showPasswordModal} ? '' : 'modal-hidden'"
+           class="modal-overlay"
+         >
+           <form class="password-card" th:action="@{'/user/' + ${user.id} + '/changePassword'}" method="post">
+               <h2>Cambia Password</h2>
+               <label for="newPassword">Nuova password</label>
+               <input
+                   type="password"
+                   id="newPwd"
+                   name="newPwd"
+                   placeholder="Inserisci la nuova password"
+                   required
+                   minlength="8"
+               />
+               <label for="confirmPassword">Conferma nuova password</label>
+               <input
+                   type="password"
+                   id="confirmPwd"
+                   name="confirmPwd"
+                   placeholder="Conferma la nuova password"
+                   required
+                   minlength="8"
+               />
+              <div th:if="${msgError != null}" style="color:#d32f2f; font-size:1rem; font-weight:600; margin-top:2px; text-align:left; width:100%;">
+                <span th:text="${msgError}"></span>
+              </div>
+               <div class="password-btns">
+                   <a th:href="@{'/user/' + ${user.id}}" class="password-btn cancel">Annulla</a>
+                   <button type="submit" class="password-btn submit">Conferma</button>
+               </div>
+           </form>
+    </main>
+        <footer class="min-footer">
+        SiwBooks &ndash; La tua Libreria Digitale
+    </footer>
+</body>
+</html>

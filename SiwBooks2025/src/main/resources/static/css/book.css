@@ -1,0 +1,489 @@
+/* Forza dimensione immagini carosello */
+.carousel-img {
+  max-width: 180px !important;
+  max-height: 240px !important;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+/* Navbar and Footer (copied from books.css for consistency) */
+.navbar {
+    width: 100vw;
+    min-width: 100vw;
+    left: 0;
+    right: 0;
+    top: 0;
+    position: fixed;
+    background: url('/images/libri.jpeg') center center/cover no-repeat;
+    color: #fff8e1;
+    padding: 0.5rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    font-family: 'Open Sans', sans-serif;
+    z-index: 100;
+}
+
+body {
+    padding-top: 70px;
+    background: #f5ecd7;
+    font-family: 'Open Sans', Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, p, a, button, input, textarea, label, .navbar-link, .show-form-btn, .author-link, .survey-title, .survey-text, .survey-rating, .survey-delete-btn, .btn-cancel-modal, .modal-title, .footer-content {
+    font-family: 'Open Sans', Arial, sans-serif !important;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 32px;
+    box-sizing: border-box;
+}
+.navbar-links-group {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.navbar-links-group:last-child {
+    margin-right: 48px;
+}
+.navbar-Title {
+    color: #fff;
+    font-family: 'Merriweather', serif !important;
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    margin-left: 18px;
+}
+.navbar-link {
+    background: #fff8e1;
+    color: #7c5c2b;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: none;
+    transition: background 0.2s, color 0.2s;
+    margin-left: 8px;
+    text-decoration: none;
+    font-family: 'Open Sans', Arial, sans-serif !important;
+}
+.navbar-link.active, .navbar-link:hover {
+    background: #ffe4b5;
+    color: #5a3c13;
+}
+.navbar-link.disabled {
+    color: #e7d7b8;
+    cursor: not-allowed;
+    background: none;
+}
+.navbar-home-icon {
+    height: 28px;
+    vertical-align: middle;
+    background: none;
+    border: none;
+}
+.footer {
+    width: 100vw;
+    min-width: 100vw;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    background: #f5ecd7;
+    color: #5a3c13;
+    padding: 1rem 0 0.5rem 0;
+    font-family: 'Open Sans', sans-serif;
+    z-index: 100;
+}
+.footer-content {
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Layout for book details and reviews */
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: 2rem auto 0 auto;
+    min-height: 70vh;
+    width: 100%;
+}
+.book-details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 0;
+}
+
+/* Book info card (left) */
+.book-info {
+    background: #e7d7b8;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(44, 34, 15, 0.08);
+    padding: 2.2rem 2rem 2rem 2rem;
+    min-width: 400px;
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    color: #5a3c13;
+}
+.book-title {
+    font-family: 'Merriweather', serif;
+    font-size: 2.1rem;
+    color: #5a3c13;
+    margin-bottom: 1.2rem;
+}
+.book-cover-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.2rem;
+}
+.images-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 0.7rem;
+    margin-bottom: 0.7rem;
+}
+.image-item {
+    position: relative;
+}
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+.book-img {
+    max-width: 120px;
+    max-height: 160px;
+    border-radius: 8px;
+    box-shadow: 0 1px 8px rgba(44, 34, 15, 0.10);
+    object-fit: cover;
+    background: #fff8e1;
+}
+.delete-image-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #c0392b;
+    color: #fff8e1;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    z-index: 2;
+}
+.delete-image-btn:hover {
+    background: #a93226;
+}
+.button-add-image {
+    margin-top: 0.7rem;
+}
+.show-form-btn {
+    background: #fff8e1;
+    color: #7c5c2b;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: none;
+    transition: background 0.2s, color 0.2s;
+    margin-left: 8px;
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+    font-family: 'Open Sans', Arial, sans-serif !important;
+    display: inline-block;
+}
+.show-form-btn.active, .show-form-btn:hover {
+    background: #ffe4b5;
+    color: #5a3c13;
+}
+.info-section {
+    margin-bottom: 1.1rem;
+    width: 100%;
+}
+.authors-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+}
+.author-link {
+    background: #e7d7b8;
+    color: #5a3c13;
+    border-radius: 5px;
+    padding: 0.2rem 0.7rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+.author-link:hover {
+    background: #d6c3a3;
+}
+
+/* Reviews (right) */
+.reviews-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin: 0;
+    align-items: center;
+}
+.surveys-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 100%;
+}
+ .survey-item {
+    background: #fff8e1;
+    border-radius: 14px;
+    box-shadow: 0 1px 8px rgba(44, 34, 15, 0.10);
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.2rem;
+    min-height: 80px;
+    min-width: 400px;
+    max-width: 600px;
+}
+/* SOLO la recensione dell'utente (user-review) va in colonna */
+.survey-item.user-review {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.2em !important;
+}
+.survey-item.user-review .survey-delete-btn {
+    margin-left: 0 !important;
+    margin-top: 0.3em;
+    align-self: flex-start;
+}
+
+.survey-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #7c5c2b;
+    margin-bottom: 0.5rem;
+}
+.survey-text {
+    font-size: 1rem;
+    color: #5a3c13;
+    margin-bottom: 0.3rem;
+}
+.survey-rating {
+    font-size: 0.95rem;
+    color: #c0392b;
+    margin-bottom: 0.3rem;
+}
+.survey-delete-btn {
+    background: #c0392b;
+    color: #fff8e1;
+    border: none;
+    border-radius: 6px;
+    padding: 0.3rem 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: auto;
+    transition: background 0.2s;
+    text-decoration: none;
+}
+.survey-delete-btn:hover {
+    background: #a93226;
+}
+.survey-empty {
+    color: #a93226;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 1.2rem;
+}
+
+/* Modal styles (copied for consistency) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(44, 34, 15, 0.18);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background: #fff8e1;
+    border-radius: 18px;
+    box-shadow: 0 6px 32px rgba(44, 34, 15, 0.22);
+    padding: 2.8rem 2.8rem 2.2rem 2.8rem;
+    min-width: 340px;
+    max-width: 440px;
+    text-align: center;
+    position: relative;
+    border: 2px solid #e7d7b8;
+}
+.close-modal-link {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 2.2rem;
+    color: #c0392b;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+    transition: color 0.2s;
+}
+.close-modal-link:hover {
+    color: #a93226;
+}
+.modal-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(44,34,15,0.10);
+}
+.add-photo-form label {
+    display: block;
+    font-size: 1.08rem;
+    color: #5a3c13;
+    font-weight: 600;
+    margin-bottom: 0.7rem;
+    margin-top: 0.5rem;
+    letter-spacing: 0.2px;
+}
+.add-photo-form input[type="file"] {
+    display: block;
+    margin: 0.7rem auto 1.2rem auto;
+    padding: 0.5rem 0.2rem;
+    font-size: 1.05rem;
+    background: #f5ecd7;
+    border-radius: 8px;
+    border: 1px solid #e7d7b8;
+    color: #5a3c13;
+    width: 80%;
+    cursor: pointer;
+}
+.btn-submit-photo {
+    background: #5a3c13;
+    color: #fff8e1;
+    border: none;
+    border-radius: 7px;
+    padding: 0.7rem 1.7rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    cursor: pointer;
+    align-self: center;
+    margin-right: 0.5rem;
+    margin-top: 0.7rem;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+    transition: background 0.2s, color 0.2s;
+    font-family: 'Open Sans', Arial, sans-serif !important;
+}
+.btn-submit-photo:hover {
+    background: #473015;
+    color: #fff8e1;
+}
+.btn-submit-photo, .btn-cancel-modal {
+    align-self: center;
+}
+.btn-cancel-modal {
+    background: #c0392b;
+    color: #fff8e1;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-cancel-modal:hover {
+    background: #a93226;
+    color: #fff8e1;
+}
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 1.2rem;
+}
+.form-error {
+    color: #c0392b;
+    font-size: 0.98rem;
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
+}
+.btn-submit-edit {
+    background: #5a3c13;
+    color: #fff8e1;
+    border: none;
+    border-radius: 7px;
+    padding: 0.7rem 1.7rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    cursor: pointer;
+    align-self: center;
+    margin-right: 0.5rem;
+    margin-top: 0.7rem;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+    transition: background 0.2s, color 0.2s;
+    font-family: 'Open Sans', Arial, sans-serif !important;
+}
+.btn-submit-edit:hover {
+    background: #473015;
+    color: #fff8e1;
+}
+.edit-book-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1.1rem;
+}
+.edit-book-form label {
+    align-self: flex-start;
+    font-size: 1.08rem;
+    color: #5a3c13;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    margin-top: 0.2rem;
+    letter-spacing: 0.2px;
+}
+.edit-book-form input[type="text"],
+.edit-book-form input[type="number"] {
+    width: 100%;
+    max-width: 340px;
+    padding: 0.5rem 0.7rem;
+    font-size: 1.05rem;
+    border-radius: 8px;
+    border: 1px solid #e7d7b8;
+    background: #f5ecd7;
+    color: #5a3c13;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+}

@@ -1,42 +1,47 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - SiwBooks</title>
-    <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="/css/login.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css?family=Merriweather:400,700|Open+Sans:400,600" rel="stylesheet">
+	<title>Siwbooks - Login</title>
+	<link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
-<body>
-    <div class="top-right-home">
-        <a href="/" title="Torna alla Home">
-            <img src="/images/backhome.png" alt="Home" style="height:32px;width:32px;vertical-align:middle;">
-        </a>
-    </div>
-    <div class="login-container">
-        <h2>Accedi a SiwBooks</h2>
-        <form method="post" action="/login">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
 
-            <label for="pwd">Password</label>
-            <input type="password" id="pwd" name="pwd" required>
-
-            <button type="submit">Login</button>
-
-            <div style="text-align:center; margin-top: 1rem; font-size: 0.98rem;">
-                Ancora non hai un profilo? <a href="/register" style="color:#0984e3; font-weight:bold; text-decoration:underline;">Registrati!</a>
-            </div>
-        </form>
-        <div class="error-message">
-            <!-- Mostra errore se login fallito -->
-            <span th:if="${param.error}" th:text="'Credenziali non valide'">Credenziali non valide</span>
-            <script>
-                if(window.location.search.includes('error')){
-                    document.write('<span style="color:#d63031">Credenziali non valide</span>');
-                }
-            </script>
-        </div>
-    </div>
+<body style="display: flex; flex-direction: column; min-height: 100vh; background: #f5ecd7;">
+	<div class="login-bar">
+		<div class="left">
+			<a th:href="@{/}" class="back-btn">
+				<img th:src="@{/images/backhome.png}" src="/images/backhome.png" alt="Home">
+			</a>
+		</div>
+		<div class="login-center">
+			<span class="login-title-main">SiwBooks</span>
+			<span class="login-title-sub">Benvenuto nella tua libreria digitale</span>
+		</div>
+		<div class="right">
+			<a th:href="@{/books}"><button class="nav-btn">Libri</button></a>
+			<a th:href="@{/authors}"><button class="nav-btn">Autori</button></a>
+		</div>
+	</div>
+	<div class="login-container">
+		<div class="login-card">
+			<h2>Accedi a SiwBooks</h2>
+			<form class="login-form" th:action="@{/login}" method="post" autocomplete="off" novalidate>
+				<label for="username">Username</label>
+				<input type="text" id="username" name="username" placeholder="Inserisci username" required autocomplete="off">
+				<label for="pwd">Password</label>
+				<input type="password" id="pwd" name="pwd" placeholder="Inserisci password" required minlength="4">
+				<button type="submit" class="login-btn">Accedi</button>
+				<div th:if="${param.error}" class="error-msg">Credenziali non valide. Riprova.</div>
+				<div th:if="${admin != true}" class="register-link">
+					<p>Non hai un account? <a th:href="@{/register}" class="signup-link">Registrati</a></p>
+				</div>
+			</form>
+		</div>
+	</div>
+	<footer class="main-footer">
+		SiwBooks &ndash; La tua Libreria Digitale
+	</footer>
 </body>
 </html>
