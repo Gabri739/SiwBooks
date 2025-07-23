@@ -1,3 +1,13 @@
+/* Griglia libri amministratore */
+.books-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 24px 18px;
+    align-items: stretch;
+    width: 100%;
+    margin-top: 1.5rem;
+}
 /* Bottone Aggiungi autore card */
 .view-admin-link {
     background: #7c5c2b;

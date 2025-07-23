@@ -108,10 +108,10 @@
 						<input class="form-input" type="text" id="nationality" th:field="*{nationality}" maxlength="64" />
 
 						<label class="form-label" for="dateBirth">Data di nascita</label>
-						<input class="form-input" type="date" id="dateBirth" th:field="*{dateBirth}" required />
+						<input class="form-input" type="date" id="dateBirth" th:field="*{dateBirth}" required max="2020-12-31" />
 
 						<label class="form-label" for="dateDeath">Data di morte</label>
-						<input class="form-input" type="date" id="dateDeath" th:field="*{dateDeath}" />
+						<input class="form-input" type="date" id="dateDeath" th:field="*{dateDeath}" max="2024-12-31" />
 
 						<label class="form-label" for="photoFile">Foto (carica una nuova per sostituire)</label>
 						<input class="form-file" type="file" id="photoFile" name="photoFile" accept="image/*" />
