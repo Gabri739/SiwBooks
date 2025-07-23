@@ -79,9 +79,9 @@
 			   </div>
 		   </div>
 		   <!-- REVIEWS SECTION BELOW BOOK CARD -->
-		   <div class="reviews-section">
+		   <div class="reviews-section" style="display:flex; flex-direction:column; align-items:center; width:100%; margin-top:2.5rem;">
 			   <h2 style="margin-bottom:1rem;">Recensioni</h2>
-			   <div class="surveys-list" th:if="${!#lists.isEmpty(book.surveys)}">
+			   <div class="surveys-list" th:if="${!#lists.isEmpty(book.surveys)}" style="display:flex; flex-direction:column; align-items:center; width:100%; max-width:600px;">
 				   <div th:each="survey : ${book.surveys}" class="survey-item">
 					   <h4 class="survey-title" th:text="'Titolo: '+ ${survey.title} + ' [ ' + ${survey.user.name} + ' ' +  ${survey.user.surname}+' ]'">Titolo recensione</h4>
 					   <p class="survey-text">Testo:</p>
@@ -93,7 +93,7 @@
 				   </div>
 			   </div>
 			   <!-- No Reviews Message -->
-			   <div class="surveys-list" th:if="${#lists.isEmpty(book.surveys)}">
+			   <div class="surveys-list" th:if="${#lists.isEmpty(book.surveys)}" style="display:flex; flex-direction:column; align-items:center; width:100%; max-width:600px;">
 				   <h3 class="survey-empty">Nessuna recensione</h3>
 			   </div>
 		   </div>
